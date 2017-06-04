@@ -128,12 +128,12 @@
 			children = (
 				EAAEDADF1EE441CD00C46E9D /* YHPhotoBrowserConfig.h */,
 				EAAEDAE01EE441CD00C46E9D /* YHPhotoBrowserConfig.m */,
+				EAAEDAE51EE441CD00C46E9D /* YHPhotoBrowserView.h */,
+				EAAEDAE61EE441CD00C46E9D /* YHPhotoBrowserView.m */,
 				EAAEDAE11EE441CD00C46E9D /* YHPhotoBrowserContentView.h */,
 				EAAEDAE21EE441CD00C46E9D /* YHPhotoBrowserContentView.m */,
 				EAAEDAE31EE441CD00C46E9D /* YHPhotoBrowserLoadingView.h */,
 				EAAEDAE41EE441CD00C46E9D /* YHPhotoBrowserLoadingView.m */,
-				EAAEDAE51EE441CD00C46E9D /* YHPhotoBrowserView.h */,
-				EAAEDAE61EE441CD00C46E9D /* YHPhotoBrowserView.m */,
 			);
 			path = PhotoBrowser;
 			sourceTree = "<group>";
@@ -422,6 +422,7 @@
 				EAAEDAD41EE4417400C46E9D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

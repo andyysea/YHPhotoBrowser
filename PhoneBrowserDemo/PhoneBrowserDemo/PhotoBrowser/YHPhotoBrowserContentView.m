@@ -217,6 +217,10 @@
     // 在识别是否有其他多点手势的情况下再执行是否是单点
     [singleTap requireGestureRecognizerToFail:doubleTap];
     
+    // 5> 添加捏合手势
+    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:nil action:nil];
+    [self addGestureRecognizer:pinchGesture];
+    
     // 属性记录
     _scrollView = scrollView;
     _imageView = imageView;
