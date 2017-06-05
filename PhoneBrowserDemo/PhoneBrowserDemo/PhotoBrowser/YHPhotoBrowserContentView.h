@@ -26,6 +26,8 @@
 
 /** 是否开始加载当前单个图片视图的图片 */
 @property (nonatomic, assign) BOOL IsBeginLoading;
+/** 图片是否加载完成 -> 没有加载完成不能缩放和保存 */
+@property (nonatomic, assign) BOOL IsHaveLoaded;
 
 /** 设置图片的URL,以及占位图片 */
 - (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder;

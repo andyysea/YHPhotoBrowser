@@ -16,8 +16,6 @@
 
 @interface YHPhotoBrowserContentView ()<UIScrollViewDelegate>
 
-/** 图片是否加载完成 -> 没有加载完成不能缩放 */
-@property (nonatomic, assign) BOOL IsHaveLoaded;
 /** 加载失败之后显示的提示按钮,点击之后可以重新加载 */
 @property (nonatomic, strong) UIButton *reloadButton;
 /** 图片的URL */
