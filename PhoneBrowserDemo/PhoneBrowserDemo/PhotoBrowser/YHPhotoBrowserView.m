@@ -24,7 +24,7 @@
 
 
 /** 内容视图,作为self的父视图 */
-@property (nonatomic, weak) UIView *contentView;
+@property (nonatomic, strong) UIView *contentView;
 /** 对底层滚动视图 */
 @property (nonatomic, weak) UIScrollView *scrollView;
 
@@ -63,6 +63,7 @@
 
 #pragma mark - 展示图片浏览器 
 - (void)showPhotoBrowser {
+    [[UIApplication sharedApplication].keyWindow addSubview:self.contentView];
     // 处理横屏竖屏问题
 //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         // 这里先调用一次,为了横屏打开图片时候的处理
@@ -219,6 +220,7 @@
 
 #pragma mark  如果没有高质量的图片,就把之前显示的小图片或者低质量的图片直接呈现给图片浏览器
 - (UIImage *)lowQuailtyImageWithIndex:(NSInteger)Index {
+    NSLog(@"----------");
     if ([self.delegate respondsToSelector:@selector(photoBrowser:currentShowLowQualityImageWithIndex:)]) {
         return [self.delegate photoBrowser:self currentShowLowQualityImageWithIndex:Index];
     }
@@ -319,7 +321,7 @@
     self.bounds = contentView.bounds;
 
     [contentView addSubview:self];
-    [window addSubview:contentView];
+//    [window addSubview:contentView];
 
     // 2> 添加底部滚动视图
     UIScrollView *scrollView = [[UIScrollView alloc] init];

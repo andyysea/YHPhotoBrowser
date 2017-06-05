@@ -8,12 +8,13 @@
 
 #import "OneViewController.h"
 #import <UIImageView+WebCache.h>
+#import "YHPhotoBrowserView.h"
 
 #define  ScreenWidth   [UIScreen mainScreen].bounds.size.width
 #define  ScreenHeight  [UIScreen mainScreen].bounds.size.height
 #define  ImageHeight   ScreenWidth * 9 / 16
 
-@interface OneViewController ()<UIScrollViewDelegate>
+@interface OneViewController ()<UIScrollViewDelegate, YHPhotoBrowserViewDelegate>
 
 /** 网络数据的图片 URL数组 */
 @property (nonatomic, strong) NSArray *imageArray;
@@ -46,10 +47,25 @@
 }
 
 
+#pragma mark - YHPhotoBrowserViewDelegate
+- (UIImage *)photoBrowser:(YHPhotoBrowserView *)browserView currentShowLowQualityImageWithIndex:(NSInteger)Index {
+    NSLog(@"- index --> %zd", Index);
+    UIImageView *currentImageView = self.imageScrollView.subviews[Index];
+    
+    return currentImageView.image;
+}
+
+//- (NSURL *)photoBrowser:(YHPhotoBrowserView *)browserView highQualityImageWithIndex:(NSInteger)index {
+//    return nil ;
+//}
+
 #pragma mark - 点按手势
 - (void)tapClick {
     NSLog(@"--> %zd", _currentPage);
     // 点击之后,跳转图片浏览器
+    YHPhotoBrowserView *browserView = [[YHPhotoBrowserView alloc] initWithImageCurrentIndex:self.currentPage - 1 imageTotalCount:self.imageArray.count sourceImagesSuperView:self.imageScrollView];
+    browserView.delegate = self;
+    [browserView showPhotoBrowser];
 }
 
 
