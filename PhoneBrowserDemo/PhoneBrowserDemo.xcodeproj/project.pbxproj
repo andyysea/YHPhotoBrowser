@@ -100,12 +100,12 @@
 			children = (
 				EAAEDAC11EE4417400C46E9D /* AppDelegate.h */,
 				EAAEDAC21EE4417400C46E9D /* AppDelegate.m */,
-				EAAEDAD51EE441B700C46E9D /* OneViewController.h */,
-				EAAEDAD61EE441B700C46E9D /* OneViewController.m */,
 				EAAEDAD71EE441B700C46E9D /* YHNavigationController.h */,
 				EAAEDAD81EE441B700C46E9D /* YHNavigationController.m */,
 				EAAEDAD91EE441B700C46E9D /* YHViewController.h */,
 				EAAEDADA1EE441B700C46E9D /* YHViewController.m */,
+				EAAEDAD51EE441B700C46E9D /* OneViewController.h */,
+				EAAEDAD61EE441B700C46E9D /* OneViewController.m */,
 				EAAEDADE1EE441CD00C46E9D /* PhotoBrowser */,
 				EAAEDABE1EE4417400C46E9D /* Supporting Files */,
 			);

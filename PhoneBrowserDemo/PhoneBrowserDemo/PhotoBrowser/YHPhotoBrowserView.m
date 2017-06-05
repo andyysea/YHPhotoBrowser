@@ -57,28 +57,47 @@
     return self;
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - 展示图片浏览器 
 - (void)showPhotoBrowser {
-    
-    
     // 处理横屏竖屏问题
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         // 这里先调用一次,为了横屏打开图片时候的处理
         [self currentDeviceOrientationChange];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currentDeviceOrientationChange) name:UIDeviceOrientationDidChangeNotification object:nil];
-    });
-    
-    
-    
+//    });
 }
 
-#pragma mark - 监听设备屏幕方向变化的处理
+#pragma mark  监听设备屏幕方向变化的处理
 - (void)currentDeviceOrientationChange {
-    
     if (!IsSupportLandScape) {
         return;
     }
+    YHPhotoBrowserContentView *browserContentView = self.scrollView.subviews[self.ImageCurrentIndex];
+    [browserContentView.scrollView setZoomScale:1.0 animated:YES];
+    UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
     
+    CGRect screenBounds = [UIScreen mainScreen].bounds;
+    if (UIDeviceOrientationIsLandscape(orientation)) {
+        [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+            [[UIApplication sharedApplication] setStatusBarOrientation:(UIInterfaceOrientation)orientation];
+            self.transform = (orientation == UIDeviceOrientationLandscapeRight) ? CGAffineTransformMakeRotation(M_PI * 1.5) : CGAffineTransformMakeRotation(M_PI / 2);
+            self.bounds = CGRectMake(0, 0, screenBounds.size.height, screenBounds.size.width);
+            [self setNeedsLayout];
+            [self layoutIfNeeded];
+        } completion:nil];
+    } else if (UIDeviceOrientationIsPortrait(orientation)) {
+        [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+            [[UIApplication sharedApplication] setStatusBarOrientation:(UIInterfaceOrientation)orientation];
+            self.transform = (orientation == UIDeviceOrientationPortrait) ? CGAffineTransformIdentity : CGAffineTransformMakeRotation(M_PI);
+            self.bounds = screenBounds;
+            [self setNeedsLayout];
+            [self layoutIfNeeded];
+        } completion:nil];
+    }
 }
 
 
@@ -106,7 +125,7 @@
     }
 }
 
-#pragma mark - 退出图片控制器
+#pragma mark  退出图片控制器
 - (void)hidePhotoBrowser:(UITapGestureRecognizer *)singleTap {
     YHPhotoBrowserContentView *browserContentView = (YHPhotoBrowserContentView *)singleTap.view;
     UIImageView *currentImageView = browserContentView.imageView;
@@ -215,7 +234,7 @@
     self.scrollView.bounds = rect;
     self.scrollView.center = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
     self.scrollView.contentSize = CGSizeMake(self.scrollView.subviews.count * self.scrollView.frame.size.width, self.scrollView.frame.size.height);
-#warning 这里设置初始显示的位置,待调整
+
     self.scrollView.contentOffset = CGPointMake(self.ImageCurrentIndex * self.scrollView.frame.size.width, 0);
     CGFloat y = 0;
     CGFloat w = self.scrollView.frame.size.width - YHPhotoBrowserImageViewMargin * 2;
@@ -264,6 +283,27 @@
         self.currentPageLabel.hidden = NO;
         self.saveImageButton.hidden = NO;
     }];
+}
+
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    NSInteger currentIndex = floor(self.scrollView.contentOffset.x / self.scrollView.bounds.size.width + 0.5);
+    self.ImageCurrentIndex = currentIndex;
+    self.currentPageLabel.text = [NSString stringWithFormat:@"%zd / %zd", currentIndex + 1, self.ImageTotalCount];
+    NSInteger left = currentIndex - 1;
+    NSInteger right = currentIndex + 1;
+    left = left > 0 ? left : 0;
+    right = right > self.ImageTotalCount ? self.ImageTotalCount : right;
+    // 滚动的时候加载当前页的图片和即将滚动到的图片视图的图片
+    for (NSInteger i = left; i < right; i++) {
+        [self loadImageOfImageViewWithIndex:i];
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    for (YHPhotoBrowserContentView *browserContentView in self.scrollView.subviews) {
+        [browserContentView.scrollView setZoomScale:1.0 animated:NO];
+    }
 }
 
 #pragma mark - 设置界面元素
@@ -316,7 +356,7 @@
     currentPageLabel.layer.cornerRadius = 15;
     currentPageLabel.layer.masksToBounds = YES;
     if (self.ImageTotalCount > 1) {
-        currentPageLabel.text = [NSString stringWithFormat:@"%zd / %zd", self.ImageCurrentIndex, self.ImageTotalCount];
+        currentPageLabel.text = [NSString stringWithFormat:@"%zd / %zd", self.ImageCurrentIndex + 1, self.ImageTotalCount];
     } else {
         currentPageLabel.hidden = YES;
     }

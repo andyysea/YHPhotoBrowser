@@ -41,12 +41,6 @@
 }
 
 
-//#pragma mark - 进度属性的setter方法
-//- (void)setProgress:(CGFloat)progress {
-//    _progress = progress;
-//    self.loadingView.progress = progress;
-//}
-
 #pragma mark - 设置图片的url和占位图片
 - (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder {
     _imageURL = url;
