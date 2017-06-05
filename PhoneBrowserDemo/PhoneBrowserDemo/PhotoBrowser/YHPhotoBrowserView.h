@@ -10,9 +10,26 @@
 /** 本类是本人自定义的图片浏览器视图 */
 
 #import <UIKit/UIKit.h>
+@class YHPhotoBrowserView;
+
+
+@protocol YHPhotoBrowserViewDelegate <NSObject>
+
+@required
+/** 当前显示的低质量的图片返回给图片浏览器 */
+- (UIImage *)photoBrowser:(YHPhotoBrowserView *)browserView currentShowLowQualityImageWithIndex:(NSInteger)Index;
+
+@optional
+/** 如果有高质量的图片可以使用,则优先加载高质量的图片以供缩放查看 */
+- (NSURL *)photoBrowser:(YHPhotoBrowserView *)browserView highQualityImageWithIndex:(NSInteger)index;
+
+@end
 
 
 @interface YHPhotoBrowserView : UIView
+
+/** 代理属性 */
+@property (nonatomic, weak) id <YHPhotoBrowserViewDelegate>delegate;
 
 /**
  图片浏览器初始化方法

@@ -24,6 +24,9 @@
 /** 讲单点手势传递给上一级视图做处理 -> 退出浏览器 */
 @property (nonatomic, copy) void (^singleTapBlock)(UITapGestureRecognizer *tapGesture);
 
+/** 是否开始加载当前单个图片视图的图片 */
+@property (nonatomic, assign) BOOL IsBeginLoading;
+
 /** 设置图片的URL,以及占位图片 */
 - (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder;
 
