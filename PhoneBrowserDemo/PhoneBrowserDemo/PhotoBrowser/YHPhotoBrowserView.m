@@ -36,6 +36,9 @@
 /** 提示标签是否能够保存图片,保存成功与否 */
 @property (nonatomic, strong) UILabel *tipLabel;
 
+/** 是否已经显示第一张图片视图 */
+@property (nonatomic, assign) BOOL IsHaveShowFirstView;
+
 @end
 
 @implementation YHPhotoBrowserView
@@ -80,11 +83,62 @@
 
 
 #pragma mark - 单点手势的回调处理
-- (void)singleTapBlockCallBackHandle:(UITapGestureRecognizer *)recognizer {
+- (void)singleTapBlockCallBackHandle:(UITapGestureRecognizer *)singleTap {
     YHPhotoBrowserContentView *browserContentView = self.scrollView.subviews[self.ImageCurrentIndex];
     [browserContentView.scrollView setZoomScale:1.0 animated:YES];
+    self.currentPageLabel.hidden = YES;
+    self.saveImageButton.hidden = YES;
     
+    UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+    CGRect screenBounds = [UIScreen mainScreen].bounds;
+    if (UIDeviceOrientationIsLandscape(orientation)) {
+        [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+            [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
+            self.transform = CGAffineTransformIdentity;
+            self.bounds = CGRectMake(0, 0, screenBounds.size.width, screenBounds.size.height);
+            [self setNeedsLayout];
+            [self layoutIfNeeded];
+        } completion:^(BOOL finished) {
+            [self hidePhotoBrowser:singleTap];
+        }];
+    } else {
+        [self hidePhotoBrowser:singleTap];
+    }
+}
+
+#pragma mark - 退出图片控制器
+- (void)hidePhotoBrowser:(UITapGestureRecognizer *)singleTap {
+    YHPhotoBrowserContentView *browserContentView = (YHPhotoBrowserContentView *)singleTap.view;
+    UIImageView *currentImageView = browserContentView.imageView;
+    NSInteger currentIndex = currentImageView.tag;
+    UIView *sourceView = self.sourceImagesSuperView.subviews[currentIndex];
+   
+    CGRect tempRect = [self.sourceImagesSuperView convertRect:sourceView.frame toView:self];
+    UIImageView *tempImageView = [[UIImageView alloc] init];
+    tempImageView.image = currentImageView.image;
     
+    CGFloat lowQImageW = tempImageView.image.size.width;
+    CGFloat lowQImageH = tempImageView.image.size.height;
+    CGFloat scaleH = lowQImageH * Width_Screen / lowQImageW;
+    if (scaleH < Height_Screen) {
+        tempImageView.frame = CGRectMake(0, (Height_Screen - scaleH) / 2, Width_Screen, scaleH);
+    } else {
+        tempImageView.frame = CGRectMake(0, 0, Width_Screen, scaleH);
+    }
+    [self addSubview:tempImageView];
+    
+    self.scrollView.hidden = YES;
+    self.saveImageButton.hidden = YES;
+    self.currentPageLabel.hidden = YES;
+    self.backgroundColor = [UIColor clearColor];
+    self.contentView.backgroundColor = [UIColor clearColor];
+    self.window.windowLevel = UIWindowLevelNormal;
+    [UIView animateWithDuration:0.25 animations:^{
+        tempImageView.frame = tempRect;
+    } completion:^(BOOL finished) {
+        [self.contentView removeFromSuperview];
+        [tempImageView removeFromSuperview];
+    }];
 }
 
 #pragma mark - 保存当前的图片到图片库
@@ -156,7 +210,60 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
+    CGRect rect = self.bounds;
+    rect.size.width += YHPhotoBrowserImageViewMargin * 2;
+    self.scrollView.bounds = rect;
+    self.scrollView.center = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.subviews.count * self.scrollView.frame.size.width, self.scrollView.frame.size.height);
+#warning 这里设置初始显示的位置,待调整
+    self.scrollView.contentOffset = CGPointMake(self.ImageCurrentIndex * self.scrollView.frame.size.width, 0);
+    CGFloat y = 0;
+    CGFloat w = self.scrollView.frame.size.width - YHPhotoBrowserImageViewMargin * 2;
+    CGFloat h = self.scrollView.frame.size.height;
+    [self.scrollView.subviews enumerateObjectsUsingBlock:^(__kindof YHPhotoBrowserContentView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        CGFloat x = YHPhotoBrowserImageViewMargin + (w + YHPhotoBrowserImageViewMargin * 2) * idx;
+        obj.frame = CGRectMake(x, y, w, h);
+    }];
     
+    if (!self.IsHaveShowFirstView) {
+        [self showFirstImageOfTheImageView];
+    }
+}
+
+#pragma mark 显示当前的图片视图的图片
+- (void)showFirstImageOfTheImageView {
+    UIView *sourceView = self.sourceImagesSuperView.subviews[self.ImageCurrentIndex];
+    CGRect rect = [self.sourceImagesSuperView convertRect:sourceView.frame toView:self];
+    
+    UIImageView *tempImageView = [[UIImageView alloc] initWithFrame:rect];
+    tempImageView.image = [self lowQuailtyImageWithIndex:self.ImageCurrentIndex];
+    tempImageView.contentMode = UIViewContentModeScaleAspectFit;
+    [self addSubview:tempImageView];
+    
+    CGFloat lowQImageW = tempImageView.image.size.width;
+    CGFloat lowQImageH = tempImageView.image.size.height;
+    CGFloat scaleH = lowQImageH * Width_Screen / lowQImageW;
+    
+    CGRect tempImageViewF;
+    if (scaleH < Height_Screen) {
+        tempImageViewF = CGRectMake(0, (Height_Screen - scaleH) / 2, Width_Screen, scaleH);
+    } else {
+        tempImageViewF = CGRectMake(0, 0, Width_Screen, scaleH);
+    }
+    
+    // 先隐藏
+    self.scrollView.hidden = YES;
+    self.currentPageLabel.hidden = YES;
+    self.saveImageButton.hidden = YES;
+    [UIView animateWithDuration:0.25 animations:^{
+        tempImageView.frame = tempImageViewF;
+    } completion:^(BOOL finished) {
+        self.IsHaveShowFirstView = YES;
+        [tempImageView removeFromSuperview];
+        self.scrollView.hidden = NO;
+        self.currentPageLabel.hidden = NO;
+        self.saveImageButton.hidden = NO;
+    }];
 }
 
 #pragma mark - 设置界面元素
@@ -164,6 +271,7 @@
     self.backgroundColor = YHPhotoBrowserBackgroundColor;
     
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    window.windowLevel = UIWindowLevelStatusBar + 10;
     // 1> 添加内容视图
     UIView *contentView = [[UIView alloc] initWithFrame:window.bounds];
     contentView.backgroundColor = YHPhotoBrowserBackgroundColor;
