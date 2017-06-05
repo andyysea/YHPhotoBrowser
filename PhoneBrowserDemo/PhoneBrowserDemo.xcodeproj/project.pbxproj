@@ -15,7 +15,6 @@
 		EAAEDADB1EE441B700C46E9D /* OneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAAEDAD61EE441B700C46E9D /* OneViewController.m */; };
 		EAAEDADC1EE441B700C46E9D /* YHNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAAEDAD81EE441B700C46E9D /* YHNavigationController.m */; };
 		EAAEDADD1EE441B700C46E9D /* YHViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAAEDADA1EE441B700C46E9D /* YHViewController.m */; };
-		EAAEDAE71EE441CD00C46E9D /* YHPhotoBrowserConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = EAAEDAE01EE441CD00C46E9D /* YHPhotoBrowserConfig.m */; };
 		EAAEDAE81EE441CD00C46E9D /* YHPhotoBrowserContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = EAAEDAE21EE441CD00C46E9D /* YHPhotoBrowserContentView.m */; };
 		EAAEDAE91EE441CD00C46E9D /* YHPhotoBrowserLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = EAAEDAE41EE441CD00C46E9D /* YHPhotoBrowserLoadingView.m */; };
 		EAAEDAEA1EE441CD00C46E9D /* YHPhotoBrowserView.m in Sources */ = {isa = PBXBuildFile; fileRef = EAAEDAE61EE441CD00C46E9D /* YHPhotoBrowserView.m */; };
@@ -39,7 +38,6 @@
 		EAAEDAD91EE441B700C46E9D /* YHViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YHViewController.h; sourceTree = "<group>"; };
 		EAAEDADA1EE441B700C46E9D /* YHViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YHViewController.m; sourceTree = "<group>"; };
 		EAAEDADF1EE441CD00C46E9D /* YHPhotoBrowserConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YHPhotoBrowserConfig.h; sourceTree = "<group>"; };
-		EAAEDAE01EE441CD00C46E9D /* YHPhotoBrowserConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YHPhotoBrowserConfig.m; sourceTree = "<group>"; };
 		EAAEDAE11EE441CD00C46E9D /* YHPhotoBrowserContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YHPhotoBrowserContentView.h; sourceTree = "<group>"; };
 		EAAEDAE21EE441CD00C46E9D /* YHPhotoBrowserContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YHPhotoBrowserContentView.m; sourceTree = "<group>"; };
 		EAAEDAE31EE441CD00C46E9D /* YHPhotoBrowserLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YHPhotoBrowserLoadingView.h; sourceTree = "<group>"; };
@@ -127,7 +125,6 @@
 			isa = PBXGroup;
 			children = (
 				EAAEDADF1EE441CD00C46E9D /* YHPhotoBrowserConfig.h */,
-				EAAEDAE01EE441CD00C46E9D /* YHPhotoBrowserConfig.m */,
 				EAAEDAE51EE441CD00C46E9D /* YHPhotoBrowserView.h */,
 				EAAEDAE61EE441CD00C46E9D /* YHPhotoBrowserView.m */,
 				EAAEDAE11EE441CD00C46E9D /* YHPhotoBrowserContentView.h */,
@@ -264,7 +261,6 @@
 				EAAEDAC31EE4417400C46E9D /* AppDelegate.m in Sources */,
 				EAAEDAC01EE4417400C46E9D /* main.m in Sources */,
 				EAAEDAEA1EE441CD00C46E9D /* YHPhotoBrowserView.m in Sources */,
-				EAAEDAE71EE441CD00C46E9D /* YHPhotoBrowserConfig.m in Sources */,
 				EAAEDAE81EE441CD00C46E9D /* YHPhotoBrowserContentView.m in Sources */,
 				EAAEDAE91EE441CD00C46E9D /* YHPhotoBrowserLoadingView.m in Sources */,
 				EAAEDADB1EE441B700C46E9D /* OneViewController.m in Sources */,

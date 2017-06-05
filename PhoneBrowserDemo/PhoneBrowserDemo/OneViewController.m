@@ -55,9 +55,10 @@
     return currentImageView.image;
 }
 
-//- (NSURL *)photoBrowser:(YHPhotoBrowserView *)browserView highQualityImageWithIndex:(NSInteger)index {
-//    return nil ;
-//}
+- (NSURL *)photoBrowser:(YHPhotoBrowserView *)browserView highQualityImageWithIndex:(NSInteger)index {
+    NSString *urlStr = [self.imageArray[index] stringByReplacingOccurrencesOfString:@"thumbnail" withString:@"bmiddle"];
+    return [NSURL URLWithString:urlStr];
+}
 
 #pragma mark - 点按手势
 - (void)tapClick {
