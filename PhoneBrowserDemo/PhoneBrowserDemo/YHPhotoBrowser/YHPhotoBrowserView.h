@@ -10,7 +10,7 @@
 @class YHPhotoBrowserView;
 
 @protocol YHPhotoBrowserViewDelegate <NSObject>
-
+@optional
 /** 返回图片浏览器当前的图片的下标 */
 - (void)photoBrowserView:(YHPhotoBrowserView *)photoBrowser currentIndex:(NSInteger)index;
 

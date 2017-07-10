@@ -48,7 +48,7 @@
     }
     
     // 2> 弹出图片浏览器
-    YHPhotoBrowserView *photoBrowserView = [[YHPhotoBrowserView alloc] initWithCurrentIndex:self.currentPage imageURLArray:self.urlArray placeholderImage:nil sourceView:self.imageScrollView];
+    YHPhotoBrowserView *photoBrowserView = [[YHPhotoBrowserView alloc] initWithCurrentIndex:self.currentPage imageURLArray:self.urlArray placeholderImage:[UIImage imageNamed:@"browser_placeholder"] sourceView:self.imageScrollView];
     photoBrowserView.delegate = self;
     [photoBrowserView show];
     

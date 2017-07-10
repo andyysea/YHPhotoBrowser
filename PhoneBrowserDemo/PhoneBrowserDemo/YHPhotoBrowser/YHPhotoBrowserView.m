@@ -54,7 +54,7 @@
         _placeholderImage = placeholderImage;
         _sourceView = sourceView;
         if (!placeholderImage) {
-            _placeholderImage  = [UIImage imageNamed:@"placeholderImage"];
+            _placeholderImage  = [UIImage imageNamed:@"browser_placeholder"];
         }
         
         [self setupUI];
